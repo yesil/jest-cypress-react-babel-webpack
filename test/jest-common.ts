@@ -1,6 +1,6 @@
 // common project configuration used by the other configs
 
-const path = require('path')
+import path from 'path'
 
 module.exports = {
   rootDir: path.join(__dirname, '..'),

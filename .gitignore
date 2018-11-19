@@ -3,3 +3,4 @@ coverage
 dist
 cypress/videos
 cypress/screenshots
+.DS_Store

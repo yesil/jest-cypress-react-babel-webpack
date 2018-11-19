@@ -7,8 +7,8 @@ import LoginForm from './login-form'
 import LoadUser from './load-user'
 import App from './app'
 
-if (module.hot) {
-  module.hot.accept()
+if (module['hot']) {
+  module['hot'].accept();
 }
 
 ReactDOM.render(

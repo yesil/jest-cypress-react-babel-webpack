@@ -2,8 +2,8 @@ const path = require('path')
 
 module.exports = {
   rootDir: path.join(__dirname, '..'),
-  displayName: 'lint',
-  runner: 'jest-runner-eslint',
-  testMatch: ['<rootDir>/**/*.js'],
+  displayName: 'tslint',
+  runner: 'jest-runner-tslint',
+  testMatch: ['<rootDir>/**/*.tsx?'],
   testPathIgnorePatterns: ['/node_modules/', '/coverage/', '/dist/', '/other/'],
 }

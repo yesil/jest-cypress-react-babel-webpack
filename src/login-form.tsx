@@ -1,15 +1,20 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
-import axios from 'axios'
 import {navigate} from '@reach/router'
+import axios from 'axios'
+import PropTypes from 'prop-types'
+import React, {Component} from 'react'
 
-class LoginForm extends Component {
-  static propTypes = {
+interface User {}
+
+class LoginForm extends Component<{
+  endpoint: string
+  onSuccess: (user: User) => void,
+}> {
+  public static propTypes = {
     onSuccess: PropTypes.func.isRequired,
     endpoint: PropTypes.string.isRequired,
   }
-  state = {error: null}
-  handleSubmit = e => {
+  public state = {error: null}
+  public handleSubmit = (e) => {
     e.preventDefault()
     const {
       username: {value: username},
@@ -25,14 +30,14 @@ class LoginForm extends Component {
         this.props.onSuccess(user)
         navigate('/')
       },
-      error => this.setState({error}),
+      (error) => this.setState({error}),
     )
   }
-  render() {
+  public render() {
     return (
       <form
         onSubmit={this.handleSubmit}
-        css={{
+        style={{
           fontSize: 20,
           width: 300,
           display: 'flex',
@@ -42,31 +47,31 @@ class LoginForm extends Component {
         }}
       >
         <div>
-          <label htmlFor="username-input">Username</label>
+          <label htmlFor='username-input'>Username</label>
           <input
             css={{marginLeft: 10, fontSize: 20}}
-            id="username-input"
-            name="username"
+            id='username-input'
+            name='username'
           />
         </div>
         <div css={{marginTop: 20, marginBottom: 20}}>
-          <label htmlFor="password-input">Password</label>
+          <label htmlFor='password-input'>Password</label>
           <input
             css={{marginLeft: 10, fontSize: 20}}
-            id="password-input"
-            name="password"
-            type="password"
+            id='password-input'
+            name='password'
+            type='password'
           />
         </div>
 
         <button
-          type="submit"
+          type='submit'
           css={{
-            fontSize: 18,
-            alignSelf: 'flex-end',
-            backgroundColor: 'rgba(0,0,0,0.15)',
-            padding: 8,
-            borderRadius: 2,
+            "fontSize": 18,
+            "alignSelf": 'flex-end',
+            "backgroundColor": 'rgba(0,0,0,0.15)',
+            "padding": 8,
+            "borderRadius": 2,
             ':focus': {
               backgroundColor: 'rgba(0,0,0,0.3)',
             },

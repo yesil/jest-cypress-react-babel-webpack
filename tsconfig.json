@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "lib": ["dom", "es2015"],
+    "baseUrl": "./src",
+    "rootDir": "./src",
+    "types": ["cypress"],
+    "paths": {
+      "@react/react-spectrum/*": ["@react/react-spectrum/*"],
+      "calculator-test-utils": ["../test/calculator-test-utils"],
+      "*": ["@types/*"]
+    }
+  },
+  "include": [
+    // spec files
+    "cypress/*/*.ts"
+  ]
+}
