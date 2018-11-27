@@ -5,7 +5,9 @@
 const {start} = require('..')
 const axios = require('axios')
 
-let baseURL, api, server
+let baseURL
+let api
+let server
 
 beforeAll(async done => {
   server = await start({port: 8765})
@@ -41,9 +43,9 @@ test('the server works', async done => {
 
   // can get /me
   const {data: meUser} = await api({
-    url: 'me',
-    method: 'GET',
     headers: {Authorization: `Bearer ${user.token}`},
+    method: 'GET',
+    url: 'me',
   })
   const {token: ignoredToken, ...userWithoutToken} = user
   expect(meUser).toEqual(userWithoutToken)
@@ -51,10 +53,10 @@ test('the server works', async done => {
   // can set user data
   const updates = {anything: 'goes'}
   const {data: meUserUpdated} = await api({
-    url: 'me',
-    method: 'POST',
-    headers: {Authorization: `Bearer ${user.token}`},
     data: updates,
+    headers: {Authorization: `Bearer ${user.token}`},
+    method: 'POST',
+    url: 'me',
   })
   expect(meUserUpdated).toMatchObject({
     ...userWithoutToken,
@@ -63,9 +65,9 @@ test('the server works', async done => {
 
   // can logout
   await api({
-    url: 'logout',
-    method: 'GET',
     headers: {Authorization: `Bearer ${user.token}`},
+    method: 'GET',
+    url: 'logout',
   })
 
   const meError = await api.get('me').catch(e => e.response)

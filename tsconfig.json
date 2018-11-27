@@ -5,20 +5,17 @@
     "strict": true,
     "skipLibCheck": true,
     "jsx": "react",
+    "outDir": "./dist/",
     "sourceMap": true,
     "experimentalDecorators": true,
     "lib": ["dom", "es2015"],
-    "baseUrl": "./src",
-    "rootDir": "./src",
-    "types": ["cypress"],
+    "typeRoots": ["./typings"],
+    "baseUrl": ".",
     "paths": {
-      "@react/react-spectrum/*": ["@react/react-spectrum/*"],
-      "calculator-test-utils": ["../test/calculator-test-utils"],
+      "calculator-test-utils": ["./test/calculator-test-utils"],
       "*": ["@types/*"]
-    }
+    },
+    "allowJs": true
   },
-  "include": [
-    // spec files
-    "cypress/*/*.ts"
-  ]
+  "include": ["src", "test"]
 }

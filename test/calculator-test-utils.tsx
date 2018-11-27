@@ -1,9 +1,9 @@
-import React from 'react'
-import {render as rtlRender} from 'react-testing-library'
 import {ThemeProvider} from 'emotion-theming'
+import * as React from 'react'
+import {render as rtlRender} from 'react-testing-library'
 import * as themes from '../src/themes'
 
-function render(ui, ...rest) {
+function render(ui: React.ReactNode, ...rest: any) {
   return rtlRender(
     <ThemeProvider theme={themes.dark}>{ui}</ThemeProvider>,
     ...rest,

@@ -1,36 +1,35 @@
 import {navigate} from '@reach/router'
 import axios from 'axios'
-import PropTypes from 'prop-types'
-import React, {Component} from 'react'
+import * as React from 'react'
 
-interface User {}
+export interface IUser {
+  username: string
+  token: string
+}
 
-class LoginForm extends Component<{
+class LoginForm extends React.Component<{
   endpoint: string
-  onSuccess: (user: User) => void,
+  path: string
+  onSuccess: (user: IUser) => void
 }> {
-  public static propTypes = {
-    onSuccess: PropTypes.func.isRequired,
-    endpoint: PropTypes.string.isRequired,
-  }
   public state = {error: null}
-  public handleSubmit = (e) => {
+  public handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const {
-      username: {value: username},
-      password: {value: password},
-    } = e.target.elements
+    const elements = (e.target as HTMLFormElement).elements
+    const password = (elements.namedItem('password') as HTMLInputElement).value
+    const username = (elements.namedItem('username') as HTMLInputElement).value
+
     axios({
+      data: {username, password},
       method: 'POST',
       url: `http://localhost:3000/${this.props.endpoint}`,
-      data: {username, password},
     }).then(
       ({data: {user}}) => {
         window.localStorage.setItem('token', user.token)
         this.props.onSuccess(user)
         navigate('/')
       },
-      (error) => this.setState({error}),
+      error => this.setState({error}),
     )
   }
   public render() {
@@ -38,43 +37,43 @@ class LoginForm extends Component<{
       <form
         onSubmit={this.handleSubmit}
         style={{
-          fontSize: 20,
-          width: 300,
+          alignItems: 'center',
           display: 'flex',
           flexDirection: 'column',
+          fontSize: 20,
           justifyContent: 'center',
-          alignItems: 'center',
+          width: 300,
         }}
       >
         <div>
-          <label htmlFor='username-input'>Username</label>
+          <label htmlFor="username-input">Username</label>
           <input
             css={{marginLeft: 10, fontSize: 20}}
-            id='username-input'
-            name='username'
+            id="username-input"
+            name="username"
           />
         </div>
         <div css={{marginTop: 20, marginBottom: 20}}>
-          <label htmlFor='password-input'>Password</label>
+          <label htmlFor="password-input">Password</label>
           <input
             css={{marginLeft: 10, fontSize: 20}}
-            id='password-input'
-            name='password'
-            type='password'
+            id="password-input"
+            name="password"
+            type="password"
           />
         </div>
 
         <button
-          type='submit'
+          type="submit"
           css={{
-            "fontSize": 18,
-            "alignSelf": 'flex-end',
-            "backgroundColor": 'rgba(0,0,0,0.15)',
-            "padding": 8,
-            "borderRadius": 2,
             ':focus': {
               backgroundColor: 'rgba(0,0,0,0.3)',
             },
+            alignSelf: 'flex-end',
+            backgroundColor: 'rgba(0,0,0,0.15)',
+            borderRadius: 2,
+            fontSize: 18,
+            padding: 8,
           }}
         >
           Submit

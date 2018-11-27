@@ -1,18 +1,15 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styles from './auto-scaling-text.module.css'
+import * as React from 'react'
+const styles = require('./auto-scaling-text.module.css')
 
-class AutoScalingText extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-  }
-  node = React.createRef()
-  getScale() {
+class AutoScalingText extends React.Component<{children?: React.ReactNode}> {
+  public node = React.createRef<HTMLDivElement>()
+
+  public getScale() {
     const node = this.node.current
     if (!node) {
       return 1
     }
-    const parentNode = node.parentNode
+    const parentNode = node.parentNode as HTMLElement
 
     const availableWidth = parentNode.offsetWidth
     const actualWidth = node.offsetWidth
@@ -24,7 +21,7 @@ class AutoScalingText extends React.Component {
     return 1
   }
 
-  render() {
+  public render() {
     const scale = this.getScale()
 
     return (

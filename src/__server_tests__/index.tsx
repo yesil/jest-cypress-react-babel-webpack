@@ -1,9 +1,7 @@
-import React from 'react'
-import ReactDOMServer from 'react-dom/server'
-import loadable from 'react-loadable'
+import * as React from 'react'
+import * as ReactDOMServer from 'react-dom/server'
 import App from '../app'
 
 test('can render to static markup', async () => {
-  await loadable.preloadAll()
-  ReactDOMServer.renderToString(<App />)
+  ReactDOMServer.renderToString(<App user={null} />)
 })

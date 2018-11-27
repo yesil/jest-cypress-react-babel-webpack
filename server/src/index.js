@@ -7,8 +7,8 @@ const cors = require('cors')
 const debug = getDebugger('app')
 const users = {}
 
-async function start({port} = {}) {
-  port = port || process.env.PORT || (await detectPort(3000))
+async function start({port = process.env.PORT} = {}) {
+  port = port || (await detectPort(3000))
 
   const app = express()
   app.use(cors())

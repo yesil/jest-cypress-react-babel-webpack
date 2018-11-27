@@ -20,9 +20,9 @@ describe('registration', () => {
     cy.server()
     cy.route({
       method: 'POST',
-      url: 'http://localhost:3000/register',
-      status: 500,
       response: {},
+      status: 500,
+      url: 'http://localhost:3000/register',
     })
     cy.visit('/register')
       .getByText(/submit/i)

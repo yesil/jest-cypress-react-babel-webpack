@@ -16,13 +16,13 @@ describe('anonymous calculator', () => {
 
 describe('authenticated calculator', () => {
   it('displays the username', () => {
-    cy.loginAsNewUser().then((user) => {
+    cy.loginAsNewUser().then(user => {
       cy.visit('/')
         .getByTestId('username-display')
         .should('have.text', user.username)
         .getByText(/logout/i)
         .click()
-        .queryByTestId('username-display')
+        .queryByTestId('username-display', {timeout: 1000} as any)
         .should('not.exist')
     })
   })

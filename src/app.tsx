@@ -1,20 +1,25 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {ThemeProvider} from 'emotion-theming'
 import {Link} from '@reach/router'
+import {ThemeProvider} from 'emotion-theming'
+import * as React from 'react'
 import Calculator from './calculator'
-import * as themes from './themes'
+import {IUser} from './login-form'
+import themes from './themes'
 
-class App extends React.Component {
-  static propTypes = {
-    user: PropTypes.any,
-    logout: PropTypes.func,
-  }
-  state = {theme: 'dark'}
-  handleThemeChange = ({target: {value}}) => this.setState({theme: value})
-  render() {
+class App extends React.Component<
+  {
+    path?: string
+    user: IUser | null
+    logout?: () => void
+  },
+  {theme: any}
+> {
+  public state = {theme: 'dark'}
+  public handleThemeChange = ({
+    target: {value},
+  }: React.ChangeEvent<HTMLInputElement>) => this.setState({theme: value})
+  public render() {
     return (
-      <ThemeProvider theme={themes[this.state.theme]}>
+      <ThemeProvider theme={themes.light}>
         <React.Fragment>
           <Calculator />
           <div style={{marginTop: 30}}>
@@ -45,9 +50,9 @@ class App extends React.Component {
           <div
             css={{
               display: 'flex',
-              marginTop: 10,
-              marginBottom: 10,
               justifyContent: 'space-around',
+              marginBottom: 10,
+              marginTop: 10,
             }}
           >
             {this.props.user ? (
@@ -81,5 +86,3 @@ class App extends React.Component {
 }
 
 export default App
-
-/* eslint import/namespace:0 */

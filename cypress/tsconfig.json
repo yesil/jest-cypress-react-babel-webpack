@@ -1,0 +1,14 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es6",
+    "moduleResolution": "node",
+    "strict": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "lib": ["dom", "es2015"],
+    "typeRoots": ["./typings"],
+    "types": ["cypress", "cypress-testing-library"],
+    "allowJs": false
+  }
+}

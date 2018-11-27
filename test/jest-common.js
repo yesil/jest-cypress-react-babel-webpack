@@ -1,8 +1,9 @@
 // common project configuration used by the other configs
 
-import path from 'path'
+const path = require('path')
 
 module.exports = {
+  preset: 'ts-jest',
   rootDir: path.join(__dirname, '..'),
   moduleDirectories: [
     'node_modules',

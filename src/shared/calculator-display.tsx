@@ -1,17 +1,16 @@
-import PropTypes from 'prop-types'
-import React from 'react'
+import * as React from 'react'
 import styled from 'react-emotion'
 import AutoScalingText from './auto-scaling-text'
 import {getFormattedValue} from './utils'
 
-const DisplayContainer = styled.div(({theme}) => ({
-  color: theme.displayTextColor,
-  background: theme.displayBackgroundColor,
-  lineHeight: '130px',
-  fontSize: '6em',
-  flex: '1',
-  position: 'relative',
-}))
+const DisplayContainer = styled('div')`
+  background: ${props => props.theme.displayBackgroundColor};
+  color: ${props => props.theme.displayTextColor};
+  flex: 1;
+  font-size: 6em;
+  line-height: 130px;
+  position: relative;
+`
 
 class CalculatorDisplay extends React.Component<{value: string}> {
   public render() {

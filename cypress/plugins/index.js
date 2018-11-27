@@ -1,1 +1,2 @@
-module.exports = () => {}
+// plugins file
+module.exports = (on, config) => {}

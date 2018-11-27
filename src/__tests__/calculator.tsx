@@ -1,9 +1,8 @@
 import {render} from 'calculator-test-utils'
-import React from 'react'
-import loadable from 'react-loadable'
+import * as React from 'react'
 import Calculator from '../calculator'
 
 test('renders', async () => {
-  await loadable.preloadAll()
+  const x = 1
   render(<Calculator />)
 })

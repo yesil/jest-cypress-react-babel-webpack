@@ -1,4 +1,5 @@
 module.exports = {
+  preset: 'ts-jest/presets/js-with-ts',
   ...require('./test/jest-common'),
   collectCoverageFrom: [
     '**/src/**/*.js',
@@ -21,7 +22,7 @@ module.exports = {
     },
   },
   projects: [
-    './test/jest.lint.js',
+    './test/jest.tslint.js',
     './test/jest.client.js',
     './test/jest.server.js',
     './server',

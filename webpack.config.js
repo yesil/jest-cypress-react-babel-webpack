@@ -1,22 +1,26 @@
 const path = require('path')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/index.tsx',
   devtool: 'inline-source-map',
   output: {
     path: path.resolve('dist'),
     filename: 'bundle.js',
   },
   resolve: {
-    modules: ['node_modules', path.join(__dirname, 'src'), 'shared'],
     extensions: ['.tsx', '.ts', '.js'],
+    plugins: [
+      new TsconfigPathsPlugin({
+        /*configFile: "./path/to/tsconfig.json" */
+      }),
+    ],
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
+        loader: 'ts-loader',
       },
       {
         test: /\.css$/,
@@ -29,11 +33,6 @@ module.exports = {
           {loader: 'style-loader'},
           {loader: 'css-loader', options: {modules: true, camelCase: true}},
         ],
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: 'babel-loader',
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
@@ -49,6 +48,6 @@ module.exports = {
   },
 }
 
-// if (process.env.npm_lifecycle_event === 'dev:client') {
-//   module.exports.mode = 'development'
-// }
+if (process.env.npm_lifecycle_event === 'dev:client') {
+  module.exports.mode = 'development'
+}

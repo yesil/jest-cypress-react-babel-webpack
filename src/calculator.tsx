@@ -1,65 +1,69 @@
-import React from 'react'
-import PointTarget from 'react-point'
-import loadable from 'react-loadable'
-import PropTypes from 'prop-types'
-import styles from './calculator.module.css'
+import * as React from 'react'
+import CalculatorDisplay from './shared/calculator-display'
+const styles = require('./calculator.module.css')
 
-// NOTE: Normally I wouldn't do this, but I wanted to include code
-// splitting in this example because it's something you have to
-// handle with Jest and many people will want to know :).
-const CalculatorDisplay = loadable({
-  loader: () => import('calculator-display').then(mod => mod.default),
-  loading: () => <div style={{height: 120}}>Loading display...</div>,
-})
-
-class CalculatorKey extends React.Component {
-  static propTypes = {
-    onPress: PropTypes.func.isRequired,
-    className: PropTypes.string,
-  }
-  render() {
+class CalculatorKey extends React.Component<{
+  onPress: () => void
+  className: string
+}> {
+  public render() {
     const {onPress, className = '', ...props} = this.props
 
     return (
-      <PointTarget onPoint={onPress}>
-        <button className={`${styles.calculatorKey} ${className}`} {...props} />
-      </PointTarget>
+      <button
+        onClick={onPress}
+        className={`${styles.calculatorKey} ${className}`}
+        {...props}
+      />
     )
   }
 }
 
-const CalculatorOperations = {
-  '/': (prevValue, nextValue) => prevValue / nextValue,
-  '*': (prevValue, nextValue) => prevValue * nextValue,
-  '+': (prevValue, nextValue) => prevValue + nextValue,
-  '-': (prevValue, nextValue) => prevValue - nextValue,
-  '=': (prevValue, nextValue) => nextValue,
+type Operator = '*' | '+' | '-' | '/' | '=' | '%'
+type FromOperators = {
+  [k in Operator]: (prevValue: number, nextValue: number) => number
+}
+const CalculatorOperations: FromOperators = {
+  '%': (prevValue: number, nextValue: number) => prevValue % nextValue,
+  '*': (prevValue: number, nextValue: number) => prevValue * nextValue,
+  '+': (prevValue: number, nextValue: number) => prevValue + nextValue,
+  '-': (prevValue: number, nextValue: number) => prevValue - nextValue,
+  '/': (prevValue: number, nextValue: number) => prevValue / nextValue,
+  '=': (prevValue: number, nextValue: number) => nextValue,
 }
 
-class Calculator extends React.Component {
-  state = {
-    value: null,
+class Calculator extends React.Component<
+  {},
+  {
+    displayValue: string
+    operator: Operator | null
+    value: number | null
+    waitingForOperand: boolean
+  }
+> {
+  public state = {
     displayValue: '0',
     operator: null,
+    value: null,
     waitingForOperand: false,
   }
 
-  clearAll() {
+  public clearAll() {
     this.setState({
-      value: null,
       displayValue: '0',
       operator: null,
+      value: null,
       waitingForOperand: false,
     })
   }
 
-  clearDisplay() {
+  public clearDisplay() {
     this.setState({
       displayValue: '0',
     })
   }
 
-  clearLastChar() {
+  public clearLastChar() {
     const {displayValue} = this.state
 
     this.setState({
@@ -67,7 +71,7 @@ class Calculator extends React.Component {
     })
   }
 
-  toggleSign() {
+  public toggleSign() {
     const {displayValue} = this.state
     const newValue = parseFloat(displayValue) * -1
 
@@ -76,11 +80,13 @@ class Calculator extends React.Component {
     })
   }
 
-  inputPercent() {
+  public inputPercent() {
     const {displayValue} = this.state
     const currentValue = parseFloat(displayValue)
 
-    if (currentValue === 0) return
+    if (currentValue === 0) {
+      return
+    }
 
     const fixedDigits = displayValue.replace(/^-?\d*\.?/, '')
     const newValue = parseFloat(displayValue) / 100
@@ -90,7 +96,7 @@ class Calculator extends React.Component {
     })
   }
 
-  inputDot() {
+  public inputDot() {
     const {displayValue} = this.state
 
     if (!/\./.test(displayValue)) {
@@ -101,7 +107,7 @@ class Calculator extends React.Component {
     }
   }
 
-  inputDigit(digit) {
+  public inputDigit(digit: number) {
     const {displayValue, waitingForOperand} = this.state
 
     if (waitingForOperand) {
@@ -117,7 +123,7 @@ class Calculator extends React.Component {
     }
   }
 
-  performOperation(nextOperator) {
+  public performOperation(nextOperator: Operator) {
     const {value, displayValue, operator} = this.state
     const inputValue = parseFloat(displayValue)
 
@@ -127,31 +133,38 @@ class Calculator extends React.Component {
       })
     } else if (operator) {
       const currentValue = value || 0
-      const newValue = CalculatorOperations[operator](currentValue, inputValue)
+      const newValue = CalculatorOperations[operator as Operator](
+        currentValue,
+        inputValue,
+      )
 
       this.setState({
-        value: newValue,
         displayValue: String(newValue),
+        value: newValue,
       })
     }
 
     this.setState({
-      waitingForOperand: true,
       operator: nextOperator,
+      waitingForOperand: true,
     })
   }
 
-  handleKeyDown = event => {
+  public handleKeyDown = (event: KeyboardEvent) => {
     let {key} = event
 
-    if (key === 'Enter') key = '='
+    if (key === 'Enter') {
+      key = '='
+    }
+
+    const operator: Operator = key as Operator
 
     if (/\d/.test(key)) {
       event.preventDefault()
       this.inputDigit(parseInt(key, 10))
-    } else if (key in CalculatorOperations) {
+    } else if (operator && operator in CalculatorOperations) {
       event.preventDefault()
-      this.performOperation(key)
+      this.performOperation(operator)
     } else if (key === '.') {
       event.preventDefault()
       this.inputDot()
@@ -172,20 +185,19 @@ class Calculator extends React.Component {
     }
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown)
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown)
   }
 
-  render() {
+  public render() {
     const {displayValue} = this.state
 
     const clearDisplay = displayValue !== '0'
     const clearText = clearDisplay ? 'C' : 'AC'
-
     return (
       <div className={styles.calculator}>
         <CalculatorDisplay value={displayValue} />
@@ -321,5 +333,3 @@ class Calculator extends React.Component {
 }
 
 export default Calculator
-
-/* eslint no-eq-null:0, eqeqeq:0, react/display-name:0 */
