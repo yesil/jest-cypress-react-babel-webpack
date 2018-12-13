@@ -2,11 +2,16 @@ const path = require('path')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: {
+    kent: ['./src/kent/index.tsx'],
+    csseditor: ['./src/index.tsx'],
+    thinlib: ['./src/thinlib/index.ts'],
+    thicklib: ['./src/thicklib/index.ts'],
+  },
   devtool: 'inline-source-map',
   output: {
     path: path.resolve('dist'),
-    filename: 'bundle.js',
+    filename: '[name]-bundle.js',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
@@ -21,6 +26,20 @@ module.exports = {
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
+      },
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: 'style-loader', // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+          },
+          {
+            loader: 'less-loader', // compiles Less to CSS
+          },
+        ],
       },
       {
         test: /\.css$/,

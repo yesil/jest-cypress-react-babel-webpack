@@ -1,7 +1,7 @@
 import {ThemeProvider} from 'emotion-theming'
 import * as React from 'react'
 import {render as rtlRender} from 'react-testing-library'
-import * as themes from '../src/themes'
+import * as themes from '../src/kent/themes'
 
 function render(ui: React.ReactNode, ...rest: any) {
   return rtlRender(

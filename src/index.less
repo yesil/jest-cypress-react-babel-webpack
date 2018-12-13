@@ -1,0 +1,157 @@
+html,
+body {
+  height: 100%;
+}
+
+#overlay {
+  z-index: 1000;
+  position: fixed;
+  display: none;
+  pointer-events: none;
+  > div {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
+#styleref {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  height: 100%;
+  z-index: 1001;
+  &.right {
+    > div {
+      > .panel {
+        padding: 5px 10px 5px 10px;
+      }
+    }
+  }
+  > div {
+    flex: 1;
+    > .panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: stretch;
+      align-items: center;
+      &.mediaquery,
+      &.elementState {
+        > div {
+          display: grid;
+          align-self: stretch;
+          grid-template-columns: repeat(3, 33% [col-start]);
+        }
+      }
+      &.spacing > div {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        .rectangle {
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          padding: 40px;
+          > h4 {
+            position: absolute;
+            z-index: 1;
+            top: -15px;
+            left: 5px;
+          }
+          > div {
+            &.input1,
+            &.input2,
+            &.input3,
+            &.input4 {
+              z-index: 2;
+              position: absolute;
+              justify-content: center;
+              display: flex;
+              > input {
+                width: 40px;
+                font-size: 0.8rem;
+                background-color: unset;
+                text-align: center;
+                min-width: 24px;
+                border: 0;
+              }
+            }
+            &.input1 {
+              top: 6px;
+              left: 0;
+              right: 0;
+            }
+            &.input2 {
+              right: 2px;
+              top: 0;
+              bottom: 0;
+              flex-direction: column;
+            }
+            &.input3 {
+              left: 0;
+              right: 0;
+              bottom: 6px;
+            }
+            &.input4 {
+              left: 2px;
+              top: 0;
+              bottom: 0;
+              flex-direction: column;
+            }
+          }
+          > p {
+            &.text {
+              text-align: center;
+            }
+          }
+        }
+      }
+      &.styles {
+        flex: 1;
+        ul {
+          > li {
+            list-style-type: none;
+          }
+        }
+      }
+      &.CSS {
+        max-width: 450px;
+        word-wrap: break-word;
+      }
+      &.sub-elements {
+        > div {
+          width: 80%;
+          display: flex;
+          > ul {
+            width: 100%;
+            li > span > span {
+              width: 40px;
+              text-align: center;
+              float: right;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#elements {
+  height: 100%;
+  width: 100%;
+  [data-styleref] {
+    position: relative;
+    padding: 5px;
+    &::after {
+      bottom: 0;
+      content: '';
+      display: block;
+      height: 32px;
+    }
+  }
+}

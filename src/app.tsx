@@ -1,88 +1,54 @@
-import {Link} from '@reach/router'
-import {ThemeProvider} from 'emotion-theming'
+import Provider from '@react/react-spectrum/Provider'
 import * as React from 'react'
-import Calculator from './calculator'
-import {IUser} from './login-form'
-import themes from './themes'
 
-class App extends React.Component<
-  {
-    path?: string
-    user: IUser | null
-    logout?: () => void
-  },
-  {theme: any}
-> {
-  public state = {theme: 'dark'}
-  public handleThemeChange = ({
-    target: {value},
-  }: React.ChangeEvent<HTMLInputElement>) => this.setState({theme: value})
-  public render() {
+import {css} from '@emotion/core'
+import {observer} from 'mobx-react'
+import ElementStatePanel from './components/ElementStatePanel'
+import MediaQueryPanel from './components/MediaQueryPanel'
+import SpacingPanel from './components/SpacingPanel'
+import StylesPanel from './components/StylesPanel'
+import SubElementsPanel from './components/SubElementsPanel'
+import {StyleManager} from './libs/StyleStore'
+import {SubnodeClickCallback, SubnodeHighlightCallback} from './libs/types'
+
+export default observer(function App(props: {
+  store: StyleManager
+  subnodeHighlightCallback: SubnodeHighlightCallback
+  subnodeClickCallback: SubnodeClickCallback
+}) {
+  const currentStyle = props.store.currentStyle
+  if (currentStyle) {
     return (
-      <ThemeProvider theme={themes.light}>
-        <React.Fragment>
-          <Calculator />
-          <div style={{marginTop: 30}}>
-            <fieldset>
-              <legend>Theme</legend>
-              <label>
-                <input
-                  onChange={this.handleThemeChange}
-                  checked={this.state.theme === 'light'}
-                  type="radio"
-                  name="theme"
-                  value="light"
-                />{' '}
-                light
-              </label>
-              <label>
-                <input
-                  onChange={this.handleThemeChange}
-                  checked={this.state.theme === 'dark'}
-                  type="radio"
-                  name="theme"
-                  value="dark"
-                />{' '}
-                dark
-              </label>
-            </fieldset>
-          </div>
-          <div
-            css={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              marginBottom: 10,
-              marginTop: 10,
-            }}
-          >
-            {this.props.user ? (
-              <>
-                <div data-testid="username-display">
-                  {this.props.user.username}
-                </div>
-                <button type="button" onClick={this.props.logout}>
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/register">Register</Link>
-                <Link to="/login">Login</Link>
-              </>
-            )}
-          </div>
-          <div style={{marginTop: 30, textAlign: 'center'}}>
-            Calculator component{' '}
-            <a href="https://codepen.io/mjijackson/pen/xOzyGX">created</a>
-            {' by '}
-            <br />
-            <a href="https://twitter.com/mjackson">Michael Jackson</a> of{' '}
-            <a href="https://reacttraining.com/">React Training</a>
-          </div>
-        </React.Fragment>
-      </ThemeProvider>
+      <div
+        css={css`
+          bottom: 0;
+          display: 'flex';
+          flex-direction: 'column';
+          height: '100%';
+          max-width: ' 500px';
+          overflow-y: 'scroll';
+          position: 'fixed';
+          right: '0';
+          top: '0';
+          z-index: 1001;
+        `}
+      >
+        <Provider theme="light">
+          <SubElementsPanel
+            selector={currentStyle.selector}
+            subnodeHighlightCallback={props.subnodeHighlightCallback}
+            subnodeClickCallback={props.subnodeClickCallback}
+          />
+          <StylesPanel styles={currentStyle.styles} />
+          <SpacingPanel
+            styleReference={currentStyle.styleReference.bind(currentStyle)}
+          />
+          <ElementStatePanel />
+          <MediaQueryPanel mediaQuery={currentStyle.mediaQuery} />
+        </Provider>
+      </div>
     )
+  } else {
+    return <p>select an element</p>
   }
-}
-
-export default App
+})

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`store styles 1`] = `undefined`;
+
+exports[`store styles 2`] = `"undefined"`;
+
+exports[`store styles 3`] = `
+"[data-test] {
+	display:flex;
+}
+"
+`;
+
+exports[`store styles 4`] = `
+"@media only screen and (min-width: 650px) {
+[data-test] {
+	display:flex;
+	justify-content:flex-end;
+}
+
+}
+"
+`;

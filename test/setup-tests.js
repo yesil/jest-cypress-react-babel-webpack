@@ -4,6 +4,6 @@ require('react-testing-library/cleanup-after-each')
 
 // add jest-emotion serializer
 const {createSerializer} = require('jest-emotion')
-const emotion = require('emotion')
+const emotion = require('@emotion/core')
 
 expect.addSnapshotSerializer(createSerializer(emotion))
